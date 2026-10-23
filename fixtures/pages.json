@@ -1,0 +1,4 @@
+{
+  "scan": { "image": "scan.png", "math": false },
+  "equations": { "image": "equations.png", "math": true }
+}
