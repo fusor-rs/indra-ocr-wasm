@@ -11,6 +11,8 @@
 
 **A scanned page read to Markdown in 0.61 s**, in Chrome on an Apple M4 Pro, eight threads. [Benchmarks](benchmarks.md)
 
+<a href="https://huggingface.co/spaces/fusorlabs/indra-ocr-wasm"><img src="assets/demo/demo.gif" alt="indra-ocr-wasm in Chrome: a scanned letter and a mathematics page read to Markdown by Indra OCR on the CPU in under a second each, zero network requests" width="720"></a>
+
 Drop, paste or pick an image of a page and get it back as Markdown, with every line's box and text and the page's layout blocks: Datalab's [Indra OCR](https://huggingface.co/datalab-to/indra-ocr), a pipeline of small networks that reads printed and handwritten pages in 80+ languages, at any angle, computed on your own device. No server, no API key, no GPU required, and once the model has loaded, no page leaves the browser.
 
 indra-ocr-wasm is the app around the model: a [fusor](https://github.com/fusor-rs/fusor) page, the browser runtime and a native CLI. The model itself, compiled to WebAssembly, is built with [fusor-ai](https://github.com/fusor-rs/fusor-ai), the toolkit for AI runtimes in Rust and WebAssembly, from the published networks.
