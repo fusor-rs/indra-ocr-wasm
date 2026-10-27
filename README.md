@@ -7,13 +7,17 @@
 
 # Pages to Markdown in the browser, on the CPU
 
+**[Try it in your browser](https://huggingface.co/spaces/fusorlabs/indra-ocr-wasm)**: no install, no server. The model downloads once and runs on your CPU.
+
+**A scanned page read to Markdown in 0.61 s**, in Chrome on an Apple M4 Pro, eight threads. [Benchmarks](benchmarks.md)
+
 Drop, paste or pick an image of a page and get it back as Markdown, with every line's box and text and the page's layout blocks: Datalab's [Indra OCR](https://huggingface.co/datalab-to/indra-ocr), a pipeline of small networks that reads printed and handwritten pages in 80+ languages, at any angle, computed on your own device. No server, no API key, no GPU required, and once the model has loaded, no page leaves the browser.
 
 indra-ocr-wasm is the app around the model: a [fusor](https://github.com/fusor-rs/fusor) page, the browser runtime and a native CLI. The model itself, compiled to WebAssembly, is built with [fusor-ai](https://github.com/fusor-rs/fusor-ai), the toolkit for AI runtimes in Rust and WebAssembly, from the published networks.
 
 **In development · v0.1**: this is experimental software. See [status and known limitations](#status-and-known-limitations).
 
-[Run it](#run-it-locally) · [How it works](#how-it-works) · [How fast is it](#how-fast-is-it) · [Benchmarks](benchmarks.md) · [Status](#status-and-known-limitations)
+[Run it](#run-it-locally) · [Try it online](#try-it-online) · [How it works](#how-it-works) · [How fast is it](#how-fast-is-it) · [Benchmarks](benchmarks.md) · [Status](#status-and-known-limitations)
 
 ## Run it locally
 
@@ -27,6 +31,10 @@ just ui
 and open the address it prints. `just ui` installs the pinned tools (the threads toolchain with rustup; wasm-bindgen, binaryen and the fusor CLI into `.tools/`), downloads the checkpoint at a pinned revision (92 MB, each file sha256-checked), compiles it into a 155 MB bundle, builds the four browser runtimes (a few minutes the first time, seconds after) and the page, and serves it on `http://localhost:8787` with the bundle beside it.
 
 Drop an image of a page on the page, paste one, or choose a file; tick **Read math as LaTeX** if it holds formulas, and press **Read**, even while the model is still loading: the page is read the moment the model is ready. The page comes back as Markdown, drawn as you would read it: headings, paragraphs and lists, tables as tables, formulas typeset with KaTeX, with the Markdown and every line and its confidence below to copy, and the lines and blocks outlined on the image. Every reading is measured live: the time from Read to the page, its lines and blocks, the batches of lines through the recognizers, the turn and tilt undone, and the network requests since the model loaded, which stay at zero.
+
+## Try it online
+
+Open the Hugging Face Space [fusorlabs/indra-ocr-wasm](https://huggingface.co/spaces/fusorlabs/indra-ocr-wasm) in Chrome or Edge. The page downloads the 155 MB model once and keeps it in the browser's storage, so the next visit loads in about a second.
 
 ## More ways to run it
 

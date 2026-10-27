@@ -60,5 +60,35 @@ onnxruntime threads="8": images
     scripts/fetch-checkpoint.sh {{checkpoint}}
     {{reference}} benchmarks/reference.py {{checkpoint}} fixtures/pages.json {{images}} {{threads}}
 
+# Its tensor parts are named by their BLAKE3, so /model/parts/ can be cached as immutable.
+# The page, its four runtimes and the bundle beside it, as a static site in target/site.
+site: runtimes page
+    rm -rf target/site
+    mkdir -p target/site
+    cp -R {{app}}/dist/. target/site/
+    find target/site -name '.fusor-*.json' -delete
+    node scripts/site-bundle.mjs {{model}} target/site/model
+    cp {{model}}/LICENSE target/site/model/
+
+# The Space must already exist as a static Space: creating it with the upload makes a Gradio
+# Space, which Hugging Face refuses for a free organization.
+# The site to the Hugging Face Space fusorlabs/indra-ocr-wasm, configured by space/README.md.
+deploy-space: site
+    #!/usr/bin/env bash
+    set -euo pipefail
+    cp space/README.md target/site/
+    uv run --no-project --with huggingface_hub==0.36.2 python - target/site <<'PY'
+    import sys
+    from huggingface_hub import HfApi
+
+    HfApi().upload_folder(
+        repo_id="fusorlabs/indra-ocr-wasm",
+        repo_type="space",
+        folder_path=sys.argv[1],
+        delete_patterns="*",
+        commit_message="Deploy indra-ocr-wasm {{version}}",
+    )
+    PY
+
 # The fixed inputs the checks read.
 fixtures: images
